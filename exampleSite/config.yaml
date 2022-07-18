@@ -2,12 +2,12 @@ baseurl: https://example.com
 languageCode: en-us
 theme: hugo-theme-stack
 paginate: 5
-title: Example Site
+title: Coucou's blog
 
 languages:
     en:
         languageName: English
-        title: Example Site
+        title: Coucou's blog
         weight: 1
     zh-cn:
         languageName: 中文
@@ -54,7 +54,7 @@ params:
 
     sidebar:
         emoji: 🍥
-        subtitle: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        subtitle: 这是Coucou的博客网站
         avatar:
             enabled: true
             local: true
