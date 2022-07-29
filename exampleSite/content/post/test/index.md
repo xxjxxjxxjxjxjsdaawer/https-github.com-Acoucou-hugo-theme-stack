@@ -4,7 +4,7 @@ title = "markdown"
 date = "2022-10-04"
 description = "hello world"
 categories = [
-    "1234"
+    "test"
 ]
 tags = [
     "markdown",
