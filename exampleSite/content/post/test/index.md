@@ -1,4 +1,3 @@
-+++
 author = "Hugo Authors"
 title = "coucoutest"
 date = "2019-03-05"
@@ -11,42 +10,121 @@ tags = [
 ]
 image = "the-creative-exchange-d2zvqp3fpro-unsplash.jpg"
 
-+++
+## My first markdown
 
-hhsdlasfdlf
+### 1.字体
 
-dfsafsa1
+​	斜体：  _斜体_
 
+​	粗体：  __粗体__
 
+### 2.各种线
 
-ad飞洒发
+​	删除线： ~~删除线~~
 
-fdsafafasd1
+​	下划线： <u>下划线</u>
 
-fafda
+### 3.列表
 
-21
+	#### 	3.1无序列表
 
-dafdsaf1·
+   * 第一项
+   * 第二项
 
-{{< highlight html >}}
-.emoji {
-  font-family: Apple Color Emoji, Segoe UI Emoji, NotoColorEmoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+    #### 3.2有序列表
+
+1. 第一项
+2. 第二项
+
+### 4.区块
+
+​	这是区块
+
+> 区块1
+>
+> 区块1
+
+### 5.代码
+
+```c++
+#include "bits/stdc++.h"
+void main(){
+	printf("hello world\n");
 }
-{{< /highlight >}}
+```
 
-{{< css.inline >}}
-<style>
-.emojify {
-	font-family: Apple Color Emoji, Segoe UI Emoji, NotoColorEmoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
-	font-size: 2rem;
-	vertical-align: middle;
-}
-@media screen and (max-width:650px) {
-  .nowrap {
-    display: block;
-    margin: 25px 0;
-  }
-}
-</style>
-{{< /css.inline >}}
+### 6.链接
+
+​	[百度](https://www.baidu.com/)
+
+​	<https://www.baidu.com/>
+
+​		补充：也可以是本地文件地址
+
+​	页内跳转： [跳转](#My first markdown)
+
+### 7.图片
+
+​	![alt 属性文本](图片地址) 
+
+​	![alt 属性文本](图片地址 "可选标题")
+
+​	示例：
+
+​	![网络图片](http://static.runoob.com/images/runoob-logo.png "菜鸟教程")
+
+### 8.表格
+
+| 表头   | 表头   | 表头   |
+| ------ | ------ | ------ |
+| 单元格 | 单元格 | 单元格 |
+|        |        |        |
+
+### 9.数学公式
+
+$$
+1 + 1 = 2
+$$
+
+### 10.Typora与HTML
+
+<font size=3 color="red">字体样式</font>
+
+插入表情：  :happy:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
