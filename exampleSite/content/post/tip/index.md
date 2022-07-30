@@ -4,10 +4,10 @@ title = "mysql123"
 date = "2022-07-03"
 description = "hello12313"
 categories = [
-    "Test"
+    "themes"
 ]
 tags = [
-    "emoji",
+    "abc",
 ]
 image = "the-creative-exchange-d2zvqp3fpro-unsplash.jpg"
 
