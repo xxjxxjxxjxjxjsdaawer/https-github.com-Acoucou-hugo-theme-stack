@@ -1,13 +1,13 @@
 +++
-author = "coucou123阿发达"
-title = "mysql123按时发达"
-date = "2022-07-03"
-description = "hello12313大"
+author = "coucou"
+title = "Article tip"
+date = "2022-08-03"
+description = "tip"
 categories = [
-    "Test121314"
+    "tip"
 ]
 tags = [
-    "abc",
+    "markdown",
 ]
 image = "the-creative-exchange-d2zvqp3fpro-unsplash.jpg"
 
