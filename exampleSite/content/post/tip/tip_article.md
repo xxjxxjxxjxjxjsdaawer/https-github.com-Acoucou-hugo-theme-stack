@@ -4,7 +4,7 @@ title = "markdown写文章技巧"
 date = "2022-08-01"
 description = "markdown渲染页面技巧"
 categories = [
-    "Tip"
+    "themes"
 ]
 tags = [
     "markdown",
