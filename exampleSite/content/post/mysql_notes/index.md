@@ -2,12 +2,12 @@
 author = "coucou"
 title = "mysql"
 date = "2022-07-03"
-description = "hello"
+description = "mysql 笔记"
 categories = [
-    "Test"
+    "mysql"
 ]
 tags = [
-    "emoji",
+    "mysql",
 ]
 image = "the-creative-exchange-d2zvqp3fpro-unsplash.jpg"
 
