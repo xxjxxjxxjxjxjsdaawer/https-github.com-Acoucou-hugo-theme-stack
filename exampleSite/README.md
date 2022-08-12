@@ -1,1 +1,1 @@
-Example site modified from https://github.com/gohugoio/hugoBasicExample
+这是coucou的学习博客网站，里面有我的个人介绍以及学习笔记
