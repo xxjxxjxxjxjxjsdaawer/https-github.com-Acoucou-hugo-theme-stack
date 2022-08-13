@@ -9,7 +9,6 @@ categories = [
 tags = [
     "汇编",
 ]
-image = "the-creative-exchange-d2zvqp3fpro-unsplash.jpg"
 
 +++
 
