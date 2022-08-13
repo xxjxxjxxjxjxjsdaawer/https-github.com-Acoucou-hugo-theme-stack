@@ -14,11 +14,11 @@ tags = [
 
 ## 汇编笔记
 
-![](E:/temp/git_demo/Coucou_notes/汇编笔记/img/1.jpg)
+![](/img/1.jpg)
 
-![](E:/temp/git_demo/Coucou_notes/汇编笔记/img/2.jpg)
+![](/img/2.jpg)
 
-![](E:/temp/git_demo/Coucou_notes/汇编笔记/img/3.jpg)
+![](/img/3.jpg)
 
-![](E:/temp/git_demo/Coucou_notes/汇编笔记/img/4.jpg)
+![](/img/4.jpg)
 
