@@ -4,10 +4,10 @@ title = "单片机数据处理"
 date = "2022-08-16"
 description = "这是单片机软硬件之间的通信，通过json数据格式的封装数据和解析数据"
 categories = [
-    "mysql","数据处理", "cJSON"
+    "单片机","数据处理", "cJSON"
 ]
 tags = [
-    "mysql",
+    "单片机",
 ]
 
 +++
