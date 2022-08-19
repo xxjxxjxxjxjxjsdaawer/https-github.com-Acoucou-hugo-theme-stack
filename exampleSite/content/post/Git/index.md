@@ -1,12 +1,20 @@
 +++
 author = "coucou"
-title = "Git 笔记"
+title = "Git 常用命令集"
 date = "2022-08-01"
-description = "Git常用命令集"
+description = "Git 笔记"
+
+categories = [
+    "Git"
+]
+
 tags = [
     "Git"
 ]
+
 +++
+
+![](1.jpg)
 
 ## Git学习记录
 

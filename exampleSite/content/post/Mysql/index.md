@@ -1,6 +1,6 @@
 +++
 author = "coucou"
-title = "mysql"
+title = "mysql常用基础命令"
 date = "2022-07-03"
 description = "mysql 笔记"
 categories = [
