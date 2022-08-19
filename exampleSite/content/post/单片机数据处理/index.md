@@ -4,16 +4,15 @@ title = "单片机数据处理"
 date = "2022-08-16"
 description = "这是单片机软硬件之间的通信，通过json数据格式的封装数据和解析数据"
 categories = [
-    "单片机","数据处理", "cJSON
-
+    "mysql","数据处理", "cJSON"
 ]
 tags = [
-    "单片机",
+    "mysql",
 ]
 
 +++
 
-![](1.jpg)
+![](E:\temp\git_demo\hugo-theme-stack\exampleSite\content\post\单片机数据处理\1.jpg)
 
 ## mqtt+esp8266+单片机通信
 
@@ -473,10 +472,10 @@ root = cJSON_Parse(jssd_def);
 ##### 2.3.6 释放json对象空间
 
  ````c
- // 如果使用cJSON_Delete(cJSON *c);进行对象释放：当一个对象是另一个对象的元素时，只调用外层对象释放，否则会出现硬件错误；如果内层对象被释放，再释放外层对象，也会出现硬件错误。如果不放心，则可以直接使用free进行多次释放。
- 
- //cJSON_Delete( root );等价于{free( item );free( root );}
- //警告：使用cJSON_Delete( root );则不能使用cJSON_Delete( item );
- cJSON_Delete( root );
+// 如果使用cJSON_Delete(cJSON *c);进行对象释放：当一个对象是另一个对象的元素时，只调用外层对象释放，否则会出现硬件错误；如果内层对象被释放，再释放外层对象，也会出现硬件错误。如果不放心，则可以直接使用free进行多次释放。
+
+//cJSON_Delete( root );等价于{free( item );free( root );}
+//警告：使用cJSON_Delete( root );则不能使用cJSON_Delete( item );
+cJSON_Delete( root );
  ````
 
