@@ -55,3 +55,20 @@ tags = [
 
 （4）异步：双方各自约定通信速率 
 
+### 4. 单片机使用printf()
+
+> 使用之前，一定要将配置里的【use microlLIB】选项卡勾上！不然用不了！！
+
+```c
+#include "stdio.h"
+
+int fputc(int ch, FILE *f)
+{ 	
+	while((USART1->SR & 0X40)==0);//循环发送,直到发送完毕   
+	USART1->DR = (u8) ch;      
+	return ch;
+}
+```
+
+
+

@@ -18,6 +18,8 @@ tags = [
 
 ## 小程序生成二维码
 
+注：使用之前需包含__weapp.qrcode.esm.js__ 文件，可到GitHub下载
+
 ### 1. qrcode.wxml
 
 ```html
