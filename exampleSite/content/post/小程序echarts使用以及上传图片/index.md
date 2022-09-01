@@ -1,6 +1,6 @@
 +++
 author = "coucou"
-title = "小程序echarts的使用"
+title = "小程序echarts的使用以及上传图片"
 date = "2022-08-19"
 description = "关于echarts数据可视化，可动态更新数据"
 
@@ -446,5 +446,168 @@ function MoreinitChart(xydata) {
   "navigationBarTextStyle": "black",
   "enablePullDownRefresh": true
 }
+```
+
+## 上传图片
+
+### 1. img.wxml
+
+```html
+<view class="three">图片</view>
+  <view class="weui-uploader">
+    <view class='pics' wx:for="{{imgs}}" wx:for-item="item" wx:key="*this">
+        <image class='weui-uploader__img' src="{{item}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg">
+                  <icon type='cancel' class="delete-btn" data-index="{{index}}" catchtap="deleteImg"></icon>
+        </image>
+    </view>
+
+    <view class="tp_cont {{tj_ycang?'':'hide'}}" bindtap="chooseImg">
+      <view class="tp_add">+</view>
+    </view>
+
+</view>
+```
+
+
+
+### 2. img.js
+
+```javascript
+// pages/abc/abc.js
+const app = getApp();
+
+Page({
+
+    data: {
+        imgs: []
+       },
+      // 上传图片
+       chooseImg: function (e) {
+        var that = this;
+        var imgs = this.data.imgs;
+        if (imgs.length >= 9) {
+         this.setData({
+          lenMore: 1
+         });
+         setTimeout(function () {
+          that.setData({
+           lenMore: 0
+          });
+         }, 2500);
+         return false;
+        }
+        wx.chooseImage({
+         // count: 1, // 默认9
+         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+         success: function (res) {
+          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+          var tempFilePaths = res.tempFilePaths;
+          var imgs = that.data.imgs;
+          // console.log(tempFilePaths + '----');
+          for (var i = 0; i < tempFilePaths.length; i++) {
+           if (imgs.length >= 9) {
+            that.setData({
+             imgs: imgs
+            });
+            return false;
+           } else {
+            imgs.push(tempFilePaths[i]);
+           }
+          }
+          // console.log(imgs);
+          that.setData({
+           imgs: imgs
+          });
+
+
+          
+            wx.uploadFile({
+                url: getApp().globalData.url+'/home/login/uploadQuestionFile', //接受图片的接口地址
+                filePath: tempFilePaths[0],
+                name: 'file',
+                formData: {
+                    'user': 'test'
+                },
+                success (res){
+                    console.log(res);
+                    const data = res.data
+                    //do something
+                }
+            })
+
+         }
+        });
+       },
+       // 删除图片
+       deleteImg: function (e) {
+        var imgs = this.data.imgs;
+        var index = e.currentTarget.dataset.index;
+        imgs.splice(index, 1);
+        this.setData({
+         imgs: imgs
+        });
+       },
+       // 预览图片
+       previewImg: function (e) {
+         //获取当前图片的下标
+        var index = e.currentTarget.dataset.index;
+         //所有图片
+        var imgs = this.data.imgs;
+        wx.previewImage({
+         //当前显示图片
+         current: imgs[index],
+         //所有图片
+         urls: imgs
+        })
+       }
+      
+})
+
+```
+
+### 3. img.wxss
+
+```css
+/* 图片 */
+.three{
+  margin-top: 27rpx;
+}
+.weui-uploader{
+  margin-top: 16rpx;
+}
+.tp_add{
+  width: 152rpx;
+  height: 152rpx;
+  border-radius: 10rpx;
+  opacity: 1;
+  border: 2rpx dashed #999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 59rpx;
+}
+
+.pics {
+  float:left;
+  position:relative;
+  margin-right:15px;
+  margin-bottom:15px;
+  }
+  .pics image{
+    width: 152rpx;
+    height: 152rpx;
+  }
+  .delete-btn{
+    width: 20rpx;
+    height: 20rpx;
+    position: absolute;
+    top: -15rpx;
+    right: -5rpx;
+  }
+  .weui-uploader{
+    padding: 10rpx;
+  }
+
 ```
 
