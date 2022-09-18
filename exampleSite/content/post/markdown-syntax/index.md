@@ -1,22 +1,40 @@
 +++
-author = "Hugo Authors"
-title = "Markdown Syntax Guide"
-date = "2019-03-11"
-description = "Sample article showcasing basic Markdown syntax and formatting for HTML elements."
+author = "coucou"
+title = "我的Markdown"
+date = "2022-09-18"
+description = "test"
 tags = [
-    "markdown",
-    "css",
-    "html",
-    "themes",
+    "markdown"
 ]
 categories = [
     "themes",
     "syntax",
 ]
-series = ["Themes Guide"]
-aliases = ["migrate-from-jekyl"]
-image = "pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg"
 
 +++
 
-hello world
+## hello
+
+### 这是三级标题
+
+> fasdkjlfaf
+>
+> sdfjlsap
+
+1. hello
+2. test
+
+* fdsa
+* fsda
+* 
+
+
+
+```c
+printf("sdfa");
+
+// test
+```
+
+![](/1.jpg)
+
