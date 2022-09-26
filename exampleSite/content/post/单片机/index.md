@@ -6,6 +6,7 @@ description = "单片机散知识"
 tags = [
     "单片机"
 ]
+
 +++
 
 ## 单片机
@@ -84,7 +85,7 @@ int fputc(int ch, FILE *f)
 
 > 输入捕获模式可以用来测量脉冲宽度或者测量频率，下图以测量脉宽为例来说明输入捕获的原理
 >
-> ![](https://s2.51cto.com/images/blog/202112/25035502_61c62596e68ec69920.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
+> ![img](https://s2.51cto.com/images/blog/202112/25035502_61c62596e68ec69920.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
 >
 > 假定定时器工作在向上计数模式，图中t1-t2的时间就是我们需要测量的低电平时间。测量方法为：首先设置定时器通道x为下降沿捕获，在t1时刻就会捕获到当前的CNT值，然后立即清零CNT，并设置通道x为上升沿捕获，到t2时刻又会发送捕获事件，得到此时的CNT值（记为CCRx2）。在t1-t2之间可能产生N次定时器溢出，因此需要对定时器溢出做处理，防止低电平太长导致数据不准确。
 > t1-t2之间计数的次数为：N * ARR + CCRx2，再乘以CNT计数周期即可得到低电平持续时间
@@ -309,4 +310,70 @@ STM32片内的FLASH分成两部分：主存储块、信息块。主存储块(主
 **ISP在系统编程**，是指直接在目标电路板上对芯片进行编程，一般需要一个自举程序(BootLoader)来执行。ISP也有叫ICP在电路编程、在线编程。
 
 **IAP在应用中编程**，是指最终产品出厂后，由最终用户在使用中对用户程序部分进行编程，实现在线升级。IAP要求将程序分成两部分：引导程序、用户程序。引导程序总是不变的。IAP也有叫在程序中编程。ISP与IAP的区别在于，ISP一般是对芯片整片重新编程，用的是芯片厂的自举程序。而IAP只是更新程序的一部分，用的是电器厂开发的IAP引导程序。综合来看，ISP受到的限制更多，而IAP由于是自己开发的程序，更换程序的时候更容易操作。
+
+### 9. 51单片机内存映射
+
+思维结构很重要：
+
+![img](https://img-blog.csdnimg.cn/20200603214059736.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTg3NzQw,size_16,color_FFFFFF,t_70)
+
+由上图可知，51单片机的存储器分为俩大部分：程序存储器ROM和数据存储器RAM，这一点有别与计算机
+
+程序存储器ROM：
+1、 程序存储器ROM顾名思义，存放程序的地方，程序指令指导单片机完成设定的功能
+2、 51单片机专门设置一个16位的PC，用于指示下一时刻CPU将要执行的程序指令在ROM中的位置，由于PC指针长度位16位，所以单片机的程序存储器ROM空间大小为2^16 = 64Kb，从0000~FFFFH
+3、 ROM还可以细分为片内ROM和片外ROM
+
+片内ROM：
+8051片内有4KB ROM，地址范围从0000H~0FFFH
+
+片外ROM：
+片外可扩展，一般从1000H~FFFFH ，64KB
+
+PS:那么问题来了，51单片机是如何区分是片内ROM还是片外ROM呢？
+
+片内ROM和片外ROM的区分：
+在单片机既有片内ROM又有片外ROM时，会产生一部分重复的地址范围，
+为了解决区分片内和片外ROM的问题，51单片机设置了一根控制线EA(低电平有效)，所以
+EA = 0 => 有效 => 访问片内存储器
+EA = 1 => 无效 => 片内存储器被忽略
+本质的原理：
+就是当PC的值大于了某个值时将访问外部存储器，PC的值小于了某个值时将访问内部存储器。这个值由存储器容量的大小绝定，在8051单片机中，片内ROM = 4KB，所以当PC小于0FFFH时，访问片内ROM。
+具体的执行过程：
+当EA = 0，毫不犹豫直接从0000H开始访问片外ROM
+当EA = 1，PC从0000H开始访问片内ROM，当PC大于0FFFH时，转向访问 片外ROM，如图：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200603221350104.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTg3NzQw,size_16,color_FFFFFF,t_70)
+
+程序存储器ROM中的7个特殊地址：
+即7个外部中断的入口地址，每个地址相隔8个地址单元，存放终端服务程序显然不够，所以一般在这7个特殊地址中存放跳转指令，跳转到相应的中断服务程序。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200603221801141.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTg3NzQw,size_16,color_FFFFFF,t_70)
+
+数据存储器RAM：
+1、 RAM存储器一般存放单片机运行期间所需要的的数据和临时生成的数据，需要能够快速的读写。掉电丢失。
+2、 同ROM相同，RAM也分为片内RAM和片外RAM
+
+片内RAM：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200603230921601.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTg3NzQw,size_16,color_FFFFFF,t_70)
+
+1、 00H~1FH：工作寄存器区，又称通用寄存器，32字节，8字节为一组共4组。
+在特殊功能寄存器篇说到标志寄存器PSW的RS0、RS1位来选择工作的4组寄存器中的一组，即选择的就是这个位置中的某一组
+2、 20H~2FH：位寻址区，16字节，128位，这个地址空间中的128位可以按位访问，每一位都有一个地址，寻址空间为00H ~ 7FH ,如图：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200603231606785.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTg3NzQw,size_16,color_FFFFFF,t_70)
+
+
+在20H~2FH空间中，重新为每一位地址分配一个地址00H ~ 7FH，从而实现按位访问。
+
+3、 一般RAM区：又称用户RAM区，80字节，对于52系列，一般从30H~FFH 供用户使用，对于前俩个区中未使用的地址单元也可以作为用户单元使用
+4、 堆栈区与堆栈指针
+一般设置在2FH单元以后，避开工作寄存器区和位寻址区，典型应用就是子函数调用：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200603232317532.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNTg3NzQw,size_16,color_FFFFFF,t_70)
+
+片外RAM：
+同ROM相似，通过外部总线扩展RAM从而获得更大的存储空间，由于外部总线宽度为16位，所以片外扩展最多64KB，地址范围0000H~FFFFH
+
 
