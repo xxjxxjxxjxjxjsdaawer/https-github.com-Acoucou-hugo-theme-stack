@@ -88,8 +88,8 @@ int fputc(int ch, FILE *f)
 > ![img](https://s2.51cto.com/images/blog/202112/25035502_61c62596e68ec69920.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
 >
 > 假定定时器工作在向上计数模式，图中t1-t2的时间就是我们需要测量的低电平时间。测量方法为：首先设置定时器通道x为下降沿捕获，在t1时刻就会捕获到当前的CNT值，然后立即清零CNT，并设置通道x为上升沿捕获，到t2时刻又会发送捕获事件，得到此时的CNT值（记为CCRx2）。在t1-t2之间可能产生N次定时器溢出，因此需要对定时器溢出做处理，防止低电平太长导致数据不准确。
+>
 > t1-t2之间计数的次数为：N * ARR + CCRx2，再乘以CNT计数周期即可得到低电平持续时间
-> -----------------------------------
 
 ### 7. 定时器时间计算
 
@@ -376,4 +376,40 @@ EA = 1 => 无效 => 片内存储器被忽略
 片外RAM：
 同ROM相似，通过外部总线扩展RAM从而获得更大的存储空间，由于外部总线宽度为16位，所以片外扩展最多64KB，地址范围0000H~FFFFH
 
+### 10. cc2530内存映射
+
+本文以CC2530的F256为例，即有256kb的flash存储器和8K的sram存储器
+
+  一、CC2530里的四种存储空间（结构上划分的存储空间，并不是实际的存储器，是一种理论上的概念）
+   \1. CODE  程序存储器  用处存放程序代码和一些常量
+       有16根地址总线，所以CODE的寻址范围是 0000H~FFFFH 共64KB
+
+   \2. DATA  数据存储器  用于存放程序运行过程中的数据
+       有8根地址总线，所以DATA的寻址空间为 00H~FFH 共256 byte.低128位可以直接寻址，高128位只能间接寻址。
+
+​    \3. XDATA 外部数据存储器（只能间接寻址，访问速度比较慢） DMA是再XDATA上寻址的，这一点很重要
+​       有16根地址总线，所以 XDATA 的寻址空间为 0000H ~ FFFFH 共64K
+
+​    \4. SFR 特殊功能寄存器 就是那些T1CTL, EA, P0 等配置寄存器存储的地方 共128K。因为CC2530的配置寄存器比较多，所以一些多余的寄存器就放到了XREG 里面。XREG的大小为1K XREG的访问速度比 SFR慢。
+
+以上4中存储空间只是4种不同寻址方式的概念，并不代表物理上具体的存储设备。例如 FLASH 或者 EEPROM都可以作为物理的存储媒介映射到CODE上，DRAM或者SRAM都可以作为存储媒介映射到DATA中。CODE和DATA是存储空间的概念，FLASH、SRAM、EEPROM等是具体的物理存储设备，这两个概念不要混淆。这好比，电脑需要RAM和ROM,这个ROM可以是西部数据的硬盘，也可以使三星的硬盘，也可以是不同材料的固态硬盘。一个是存储空间，另一个是具体的物理存储设备。
+
+  二、关于CODE存储器的映射
+    大家肯定会有疑问：既然CODE的寻址范围只有64KB,那CC2530F256怎么有256KB的flash呢？
+  正是为了解决寻址空间不足的问题，CC2530才提出了映射的概念。（当然，映射的另一重要目的是为了DMA）
+CC2530把FLASH存储器分成了几个bank，每个bank的大小是32KB,即对于F256来讲，它有8个bank分别是bank0~bank7(不同芯片，bank数目不同)。通过FMAP.MAP[2:0] 控制，把不同的编号的bank映射到CODE上，解决了寻址空间受限制的问题。上图..
+![CODE_1.png](http://bbs.feibit.com/data/attachment/forum/201203/01/190254rizfqo22iir3iq3j.png) ![Banked code memory layout](https://img-blog.csdn.net/20140707093658265?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYXRvc3d3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+  从图中可以看出，bank0是rootbank，就是程序开始执行的地方，这个common area始终都是对应FLASH存储器的0000H~7FFFH,  上面的另一半可以映射bank0~7. 我以前一直疑惑，为什么common area已经有bank0了，上面怎么还可以有bank0，从user guide里看，这样是可以的，就比如CC2530F32，只有一个bank0，它也只能这么映射了吧。
+
+  三、关于XDATA存储器的映射
+关于XDATA的映射，可以这么说：一切都是为了DMA！！ 为了让DMA能访问所有的存储区域，所以把所有的存储器都映射到了XDATA上。上图：
+![XDATA.png](http://bbs.feibit.com/data/attachment/forum/201203/01/192143x368zxs8x4zmm67z.png) 
+  从图中可以看出，XDATA中包含了所有存储器的映射，包括256kb的FLASH存储器，8K 的SRAM存储器，还有 SFR , XREG, INFORMATION FAGE。这里看出来，其实CC2530的DATA,和 XDATA，都是用SRAM作为物理存储媒介的，但是它们的寻址方式不一样，所以访问DATA,比访问XDATA要快。至于SFR,XREG,INFORMATION PAGE,我不知道它们用了什么物理存储媒介，但是它们都被映射到XDATA上，可以被DMA访问。
+  这里要搞清楚一个概念，映射到XDATA上，不代表就只能用XDATA的寻址方式访问。比如SFR,它虽然被映射到了XDATA上，只能说明，DMA可以通过访问XDATA来操作SFR,但是CPU还是可以通过单周期访问SRF.打个比方，我们平时坐的公交车上都有一把逃生应急锤，在紧急情况下可以敲破窗子逃生。我们平时不会使用锤子敲碎窗子进出车厢，我们平时有车门可以走。但是在特殊情况下（比如DMA要操作某个存储器中的数据时），我们可以用特殊的方法（从XDATA上的映射来得到我们想要的数据）。
+
+  四、关于从SRAM启动代码
+上图
+
+  ![CODE_2.png](http://bbs.feibit.com/data/attachment/forum/201203/01/19423187n895apfk866f8a.png) 
+这种情况下，CC2530把SRAM存储器整个都映射到了CODE的bank area，可以从SRAM中执行代码。不要理解错了，这里只是说可以从SRAM中运行代码，不代表程序从SRAM中启动。程序还是会从 CODE的rootbank的0000H开始执行，只不过我们可以通过程序控制，让程序跳到 8000H之后，执行我们SRAM中想要的代码。
 
