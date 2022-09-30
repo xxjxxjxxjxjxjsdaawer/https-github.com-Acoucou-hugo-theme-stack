@@ -84,9 +84,9 @@ int fputc(int ch, FILE *f)
 ### 6. 输入捕获
 
 > 输入捕获模式可以用来测量脉冲宽度或者测量频率，下图以测量脉宽为例来说明输入捕获的原理
->
-> ![img](https://s2.51cto.com/images/blog/202112/25035502_61c62596e68ec69920.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
->
+
+![img](https://s2.51cto.com/images/blog/202112/25035502_61c62596e68ec69920.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
+
 > 假定定时器工作在向上计数模式，图中t1-t2的时间就是我们需要测量的低电平时间。测量方法为：首先设置定时器通道x为下降沿捕获，在t1时刻就会捕获到当前的CNT值，然后立即清零CNT，并设置通道x为上升沿捕获，到t2时刻又会发送捕获事件，得到此时的CNT值（记为CCRx2）。在t1-t2之间可能产生N次定时器溢出，因此需要对定时器溢出做处理，防止低电平太长导致数据不准确。
 >
 > t1-t2之间计数的次数为：N * ARR + CCRx2，再乘以CNT计数周期即可得到低电平持续时间
