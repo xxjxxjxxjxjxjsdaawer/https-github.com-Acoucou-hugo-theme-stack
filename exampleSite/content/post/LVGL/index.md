@@ -1,6 +1,6 @@
 +++
 author = "coucou"
-title = "LVGL"
+title = "LVGL8"
 date = "2022-09-26"
 description = "LVGL笔记"
 
