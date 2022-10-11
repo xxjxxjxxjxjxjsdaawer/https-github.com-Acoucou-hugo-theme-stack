@@ -23,12 +23,12 @@ menu:
 > 我平常一个人时喜欢听音乐，欧美日韩，电子纯音，流行trap，都听，只要旋律节奏对了，那就是我钟爱的音乐了；
 
 ##  专业能力
-1. 微信小程序开发
-2. 嵌入式开发（51、stm32、HT66、Zigbee）
+1. 嵌入式开发（51、stm32、HT66、Zigbee）
+2. 嵌入式操作系统（UCOS3）
 3. GUI设计、制作（LVGL）
 4. 无线通讯（esp8266、MQTT、Zigbee）
-5. PCB设计、制作、焊接（基础）
-6. CAD-2d、SolidWorks-3d 建模
+5. CAD-2d、SolidWorks-3d 建模
+6. 微信小程序开发
 7. 云服务器搭建、部署、维护（Linux基础）
 8. 数据库（MySQl）
 9. GitHub（git版本控制基础）

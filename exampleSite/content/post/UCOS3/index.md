@@ -349,3 +349,235 @@ void  OSIntEnter (void)
 >
 >OSTimeGet()用来获取动迁时钟节拍计数器的值。
 
+### 软件定时器
+
+>定时器本质是递减计数器，当计数器减到零时可以触发某种动作的执行，这个动作通过回调函数来实现。当定时器计时完成时，定义的回调函数就会被立即调用，应用程序可以有任意数量的定时器，UCOSIII中定时器的时间分辨率由一个宏OS_CFG_TMR_TASK_RATE_HZ，单位为HZ，默认为100Hz。
+
+|    **函数名**    |         **作用**         |
+| :--------------: | :----------------------: |
+|  OSTmrCreate()   | 创建定时器并制定运行模式 |
+|    OSTmrDel()    |        删除定时器        |
+| OSTmrRemainGet() |   获取定时器的剩余时间   |
+|   OSTmrStart()   |      启动定时器计数      |
+| OSTmrStateGet()  |    获取当前定时器状态    |
+|   OSTmrStop()    |     停止计数器倒计时     |
+
+```c
+// 创建定时器
+OSTmrCreate (OS_TMR               *p_tmr,
+             CPU_CHAR             *p_name,
+             OS_TICK               dly,
+             OS_TICK               period,
+             OS_OPT                opt,            // 模式
+             OS_TMR_CALLBACK_PTR   p_callback,
+             void                 *p_callback_arg,
+             OS_ERR               *p_err)
+```
+
+![timer1](timer1.jpg)
+
+![tiemr2](timer2.jpg)
+
+![timer3](timer3.jpg)
+
+![tiemr4](timer4.jpg)
+
+### 信号量和互斥信号量
+
+#### 信号量
+
+>信号量像是一种上锁机制，代码必须获得对应的钥匙才能继续执行，一旦获得了钥匙，也就意味着该任务具有进入被锁部分代码的权限。一旦执行至被锁代码段，则任务一直等待，直到对应被锁部分代码的钥匙被再次释放才能继续执行。
+>
+>信号量用于控制**对共享资源的保护**，但是现在基本用来做**任务同步用**。
+>
+>要想获取资源的任务必须执行**等待**操作，如果该资源对应的信号量有效值大于1，则任务可以获得该资源，任务继续运行。如果该信号量的有效值为0，则任务加入等待信号量的任务表中。如果等待时间超过某一个设定值，该信号量仍然没有被释放掉，则等待信号量的任务就进入就绪态，如果将等待时间设置为0的话任务就将一直等待该信号量
+>
+>信号量通常分为两种：**二进制信号量和计数型信号量**。
+>
+>二进制信号量只能取0和1两个值，计数型信号量的信号量值大于1，计数型信号量的范围由**OS_SEM_CTR**决定，OS_SEM_CTR可以为8位，16位和32位，取值范围分别为：0~255,0~65535和0~4294967295。
+>
+>**二进制信号量**用于那些一次只能一个任务使用的资源，比如I/O设备，打印机计；**计数型信号量**用于某些资源可以同时被几个任务所使用，比如一个缓存池有10个缓存块，那么同时最多可以支持10个任务来使用内存池
+
+|    **函数名**    |        **作用**        |
+| :--------------: | :--------------------: |
+|  OSSemCreate()   |     建立一个信号量     |
+|    OSSemDel()    |     删除一个信号量     |
+|   OSSemPend()    |     等待一个信号量     |
+| OSSemPendAbrot() |        取消等待        |
+|   OSSemPost()    | 释放或者发出一个信号量 |
+|    OSSemSet()    | 强制设置一个信号量的值 |
+
+####  互斥信号量
+
+![prioTurn1](prioTurn1.jpg)
+
+![prioTurn2](prioTurn2.jpg)
+
+|     **函数名**     |          **作用**          |
+| :----------------: | :------------------------: |
+|  OSMutexCreate()   |     建立一个互斥信号量     |
+|    OSMutexDel()    |     删除一个互斥信号量     |
+|   OSMutexPend()    |     等待一个互斥信号量     |
+| OSMutexPendAbrot() |          取消等待          |
+|   OSMutexPost()    | 释放或者发布一个互斥信号量 |
+
+>在UCOSIII中每个任务都有自己的**内嵌的信号量**，这种功能不仅能够简化代码，而且比使用独立的信号量更有效。任务信号量是直接内嵌在UCOSIII中的，任务信号量相关代码在os_task.c中。
+
+|   OSTaskSemPend()    |   等待一个任务信号量   |
+| :------------------: | :--------------------: |
+| OSTaskSemPendAbort() |   取消等待任务信号量   |
+|   OSTaskSemPost()    |     发布任务信号量     |
+|    OSTaskSemSet()    | 强行设置任务信号量计数 |
+
+### 消息传递
+
+>一个任务或者中断服务程序有时候需要和另一个任务交流信息，这个就是消息传递的过程就叫做任务间通信，任务间的消息传递可以通过2种途径：一是通过全局变量，二是通过发布消息。
+>
+>使用全局变量的时候每个任务或者中断服务程序都必须保证其对全局变量的独占访问。消息也可以通过消息队列作为中介发布给任务。
+>
+>消息包含一下几个部分：**指向数据的指针，数据的长度和记录消息发布时刻的时间戳**，指针指向的可以是一块数据区域或者甚至是一个函数。 
+
+```c
+// 消息队列是UCOSIII中的一个内核对象，为结构体OS_Q
+struct  os_q {
+OS_OBJ_TYPE         	 Type; 
+CPU_CHAR            	*NamePtr; 
+OS_PEND_LIST         	PendList;                          
+#if OS_CFG_DBG_EN > 0u
+    OS_Q                *DbgPrevPtr;
+    OS_Q                *DbgNextPtr;
+    CPU_CHAR            *DbgNamePtr;
+#endif
+OS_MSG_Q             	MsgQ	//消息列表
+};
+// OS_MSG_Q也是一个结构体
+struct  os_msg_q {                                           
+OS_MSG              *InPtr;   
+OS_MSG              *OutPtr; 
+OS_MSG_QTY           NbrEntriesSize; 
+OS_MSG_QTY           NbrEntries; 
+OS_MSG_QTY           NbrEntriesMax;
+};
+// 消息发布以后会被存放在OS_MSG类型的数据结构中，OS_MSG如下
+struct  os_msg {
+OS_MSG              *NextPtr;                           
+void                *MsgPtr; 
+OS_MSG_SIZE          MsgSize; 
+CPU_TS               MsgTS;
+};
+```
+
+![msg](msg.jpg)
+
+|   **函数名**   |        **作用**        |
+| :------------: | :--------------------: |
+|  OSQCreate()   |   创建一个消息  队列   |
+|    OSQDel()    |    删除一个消息队列    |
+|   OSQFlush()   |      清空消息队列      |
+|   OSQPend()    |        等待消息        |
+| OSQPendAbort() |      取消等待消息      |
+|   OSQPost()    | 向消息队列发布一则消息 |
+
+>同任务内嵌信号量一样，UCOSIII的每个任务中也有**内建消息队列**。而且多个任务等待同一个消息队列的应用很少见，UCOSIII中每个任务多有其内建消息队列的话用户可以不用通过外部的消息队列而直接向任务发布消息。
+>
+>如果需要使用任务内建消息队列功能的时候需要将宏**OS_CFG_TASK_Q_EN**置1来使能相关的代码。
+
+|     **函数名**     |      **作用**      |
+| :----------------: | :----------------: |
+|   OSTaskQPend()    |      等待消息      |
+| OSTaskQPendAbort() |    取消等待消息    |
+|   OSTaskQPost()    | 向任务发布一则消息 |
+|   OSTaskQFlush()   | 清空任务的消息队列 |
+
+### 同时等待多个内核对象
+
+>有时候一个任务需要与多个事件同步，这个时候就需要使用事件标志组。事件标志组与任务之间有两种同步机制：“或”同步和“与”同步。
+>
+>**“或”同步**：等待多个事件时，任何一个事件发生 ，任务都被同步，这个就称为“或”同步。
+>
+>**“与”同步**：当所有的事件都发生时任务才被同步，这种同步机制被称为“与”同步。
+>
+>在UCOSIII中**事件标志组为OS_FLAG_GRP**，如果需要使用事件标志组的时候需要将宏OS_CFG_FLAG_EN置1，
+
+```c
+struct  os_flag_grp {
+	OS_OBJ_TYPE          Type;                             
+	CPU_CHAR             *NamePtr; 
+	OS_PEND_LIST         PendList; 
+    #if OS_CFG_DBG_EN > 0u
+        OS_FLAG_GRP      *DbgPrevPtr;
+        OS_FLAG_GRP      *DbgNextPtr;
+        CPU_CHAR         *DbgNamePtr;
+    #endif
+	OS_FLAGS             Flags; 
+	CPU_TS               TS;
+};
+```
+
+|       **函数名**        |         **作用**         |
+| :---------------------: | :----------------------: |
+|     OSFlagCreate()      |      创建事件标志组      |
+|       OSFlagDel()       |      删除事件标志组      |
+|      OSFlagPend()       |      等待事件标志组      |
+|    OSFlagPendAbort()    |     取消等待事件标志     |
+| OSFlagPendGetFlagsRdy() | 获取使任务就绪的事件标志 |
+|      OSFlagPost()       |   向事件标志组发布标志   |
+
+>前面我们讲过都是**等待单个内核对象**，包括：信号量、互斥信号量、消息队列和事件标志组。在UCOSIII中允许任务同时等待多个信号量和多个消息队列，也就是说，UCOSIII不支持同时等待多个事件标志组或互斥信号量。
+>
+>一个任务可以等待任意数量的信号量和消息队列，第一个信号量或消息队列的发布会导致该任务进入就绪态。
+
+```c
+// 一个任务可以调用函数OSPendMulti()函数来等待多个对象，并且可以根据需要指定一个等待超时值
+OS_OBJ_QTY  OSPendMulti (OS_PEND_DATA   *p_pend_data_tbl,
+                         OS_OBJ_QTY     tbl_size,
+                         OS_TICK        timeout,
+                         OS_OPT         opt,
+                         OS_ERR         *p_err)
+// 在调用函数OSPendMulti()之前我们需要先初始化OS_PEND_DATA数组，数组的大小取决于任务同时等待的内核对象的总数量
+
+// 定义内核对象
+OS_SEM	Test_Sem1;			//信号量1
+OS_SEM	Test_Sem2;			//信号量2
+OS_Q	Test_Q;				//消息队列
+
+// 初始化OS_PEND_DATA数组
+OS_PEND_DATA pend_multi_tbl[CORE_OBJ_NUM];      //定义数组	
+pend_multi_tbl[0].PendObjPtr=(OS_PEND_OBJ*)&Test_Sem1;
+pend_multi_tbl[1].PendObjPtr=(OS_PEND_OBJ*)&Test_Sem2;
+pend_multi_tbl[2].PendObjPtr=(OS_PEND_OBJ*)&Test_Q;
+```
+
+### 存储管理
+
+>作为一个RTOS操作系统，内存管理是必备的功能，因此UCOSIII也就内存管理能力。通常应用程序可以调用ANSIC编译器的malloc()和free()函数来动态的分配和释放内存，但是在嵌入式事实操作系统中最好不要这么做，多次这样的操作会把原来很大的一块连续存储区域逐渐地分割成许多非常小并且彼此不相邻的存储区域，这就是**存储碎片**。
+>
+>UCOSIII中提供了一种替代malloc()和free()函数的方法，**UCOSIII中将存储空间分成区和块**，每个存储区有数量不等大小相同的存储块，在一个系统中可以有多个存储区。
+>
+>一般存储区是固定的，在程序中可以用数组来表示一个存储区，**比如u8 buffer[20]10]，就表示一个拥有20个存储块，每个存储块10个字节的存储区**。
+
+![store](store.jpg)
+
+```c
+// UCOSIII中用存储控制块来表示存储区，存储控制块为OS_MEM
+struct os_mem {
+    OS_OBJ_TYPE          Type; 
+    void                *AddrPtr; 
+    CPU_CHAR            *NamePtr;
+    void                *FreeListPtr; 
+    OS_MEM_SIZE          BlkSize; 
+    OS_MEM_QTY           NbrMax; 
+    OS_MEM_QTY           NbrFree; 
+    #if OS_CFG_DBG_EN > 0u
+        OS_MEM          *DbgPrevPtr;
+        OS_MEM         *DbgNextPtr;
+    #endif
+};
+```
+
+![store](store2.jpg)
+
+| OSMemCreate() |       创建一个存储分区       |
+| :-----------: | :--------------------------: |
+|  OSMemGet()   |  从存储分区中获得一个存储块  |
+|  OSMemPut()   | 将一个存储块归还到存储分区中 |
