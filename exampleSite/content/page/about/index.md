@@ -25,14 +25,15 @@ menu:
 ##  专业能力
 1. 嵌入式开发（51、stm32、HT66、Zigbee）
 2. 嵌入式操作系统（UCOS3）
-3. GUI设计、制作（LVGL）
-4. 无线通讯（esp8266、MQTT、Zigbee）
-5. CAD-2d、SolidWorks-3d 建模
-6. 微信小程序开发
-7. 云服务器搭建、部署、维护（Linux基础）
-8. 数据库（MySQl）
-9. GitHub（git版本控制基础）
-10. 
+3. Linux高级编程（进程线程）
+4. GUI设计、制作（LVGL）
+5. 无线通讯（esp8266、MQTT、Zigbee）
+6. CAD-2d、SolidWorks-3d 建模
+7. 微信小程序开发
+8. 云服务器搭建、部署、维护（Linux基础）
+9. 数据库（MySQl）
+10. GitHub（git版本控制基础）
+11. 
 
 >我的个人能力偏向综合性，个人综合素养中等，如（台风、与人交流对接、工作能力（如Excel表格处理、word文档书写与排版））；
 >
