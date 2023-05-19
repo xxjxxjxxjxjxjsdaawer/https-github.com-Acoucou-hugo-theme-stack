@@ -1,7 +1,7 @@
 +++
 author = "coucou"
-title = "嵌入式Linux"
-date = "2023-4-28"
+title = "Linux操作系统"
+date = "2023-04-28"
 description = "Linux操作系统"
 
 categories = [
@@ -43,7 +43,7 @@ Linux 系统是一种金字塔模型的系统，如下所示
 >5. 图形服务器(Graphical server)：这是在监视器上显示图形的子系统。通常将其称为 X 服务器或 X。
 >6. 桌面环境(Desktop environment)：这是用户与之实际交互的部分，有很多桌面环境可供选择，每个桌面环境都包含内置应用程序，比如文件管理器、Web 浏览器、游戏等
 >7. 应用程序(Applications)：桌面环境不提供完整的应用程序，就像 Windows 和 macOS 一样，Linux 提供了成千上万个可以轻松找到并安装的高质量软件。
->   Shell
+>     Shell
 
 ### Linux 内核结构
 

@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "Makefile和CMake"
-date = "2023-3-02"
+date = "2023-03-02"
 description = "这是关于Makefile和CMake基础"
 
 categories = [

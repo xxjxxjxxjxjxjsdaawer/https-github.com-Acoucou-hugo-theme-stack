@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "嵌入式Linux"
-date = "2023-4-12"
+date = "2023-04-12"
 description = "嵌入式Linux"
 
 categories = [
