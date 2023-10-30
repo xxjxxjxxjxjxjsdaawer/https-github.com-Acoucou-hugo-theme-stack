@@ -1,3 +1,16 @@
++++
+author = "coucou"
+title = "C语言——指针&数组"
+date = "2022-08-01"
+description = "C语言专题之指针&数组篇"
+categories = [
+    "C语言"
+]
+tags = [
+    "C语言","指针&数组篇"
+]
++++
+
 ## C语言——指针&数组
 
 ### 指针

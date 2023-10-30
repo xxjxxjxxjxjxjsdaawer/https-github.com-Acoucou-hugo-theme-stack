@@ -1,3 +1,16 @@
++++
+author = "coucou"
+title = "C语言——关键字"
+date = "2022-08-01"
+description = "C语言专题之关键字篇"
+categories = [
+    "C语言"
+]
+tags = [
+    "C语言","关键字篇"
+]
++++
+
 ## C语言——关键字
 
 ### goto
