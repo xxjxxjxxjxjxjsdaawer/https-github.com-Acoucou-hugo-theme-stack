@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "单片机——配置相关术语"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "单片机专题之配置相关术语"
 categories = [
     "单片机"

@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "硬件——数字逻辑"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "硬件专题之数字逻辑"
 categories = [
     "硬件"

@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "嵌软笔试面试——基础"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "嵌软笔试面试基础"
 categories = [
     "嵌软笔试面试"

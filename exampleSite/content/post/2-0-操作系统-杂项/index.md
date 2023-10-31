@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "操作系统——杂项"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "操作系统专题之杂项篇"
 categories = [
     "操作系统"

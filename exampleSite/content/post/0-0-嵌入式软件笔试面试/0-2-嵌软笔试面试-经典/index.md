@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "嵌软笔试面试——经典题"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "嵌软笔试面试常考题目"
 categories = [
     "嵌软笔试面试"

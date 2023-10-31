@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "开发工具——Makefile&CMake"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "开发工具专题之Makefile&CMake"
 categories = [
     "开发工具"

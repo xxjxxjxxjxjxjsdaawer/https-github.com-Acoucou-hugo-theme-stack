@@ -1,7 +1,7 @@
 +++
 author = "coucou"
 title = "操作系统——Linux命令"
-date = "2022-08-01"
+date = "2023-08-01"
 description = "操作系统专题之Linux命令"
 categories = [
     "操作系统"
