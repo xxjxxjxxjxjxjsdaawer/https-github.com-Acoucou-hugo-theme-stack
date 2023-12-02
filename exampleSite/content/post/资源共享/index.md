@@ -14,23 +14,28 @@ image = "1.jpg"
 
 # 资源分享系列
 
-### 概述
+### 说明
 
->
->
+>有些资源可能随时会挂掉，毕竟是免费的，懂得都懂，可以私信我更新资源
 >
 
 ## AI类
 
-### AI文本（最常用）
+### AI文本 ChatGPT 3.5
 
->工作中常用（因为工作中，一般公司是不允许挂梯子的）
+>**工作学习**中常用
 >
->**无需魔法**！！！！
+>* https://chat-shared3.zhile.io/shared.html?v=2    2023.12.2 **验证**
 >
->1. 潘多拉：https://chat-shared3.zhile.io/shared.html?v=2
->2. https://chat1.geekgpt.org/
->3. 
+>    无需魔法、不同账号的回答速度不一样
+>
+>* https://chat1.geekgpt.org/       2023.12.2 **验证**
+>
+>    无需魔法、回答速度快
+>
+>* https://chat.tinycms.xyz:3002/    2023.12.2 **验证** 
+>
+>   无需魔法、回答速度快
 
 ### AI绘图
 
