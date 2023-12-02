@@ -1,13 +1,13 @@
 +++
 author = "coucou"
-title = "嵌软笔试面试——基础"
-date = "2023-08-01"
-description = "嵌软笔试面试基础"
+title = "资源共享合集"
+date = "2023-12-01"
+description = "这是所有的资源合集，里面有资源地址以及视频说明"
 categories = [
-    "嵌软笔试面试"
+    "资源共享合集"
 ]
 tags = [
-    "嵌软笔试面试"
+    "资源共享合集"
 ]
 image = "1.jpg"
 +++
