@@ -54,7 +54,7 @@ params:
 
     sidebar:
         emoji: 🍥
-        subtitle: 这是Coucou的博客网站
+        subtitle: 这是Coucou的资源分享网站
         avatar:
             enabled: true
             local: true
