@@ -13,7 +13,7 @@ image = "1.jpg"
 
 +++
 
-# AI类资源合集（持续更新）
+# AI类资源合集（全部免费，持续更新）
 
 ## 说明
 
@@ -60,7 +60,7 @@ image = "1.jpg"
 
 * Stable Diffusion
 
-
+待更新
 
 ## AIPPT
 
