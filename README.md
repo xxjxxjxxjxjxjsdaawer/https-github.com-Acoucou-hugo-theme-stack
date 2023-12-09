@@ -2,5 +2,5 @@
 > 该网站为资源分享网站
 
 ## 在线查看
-> https://coucoublog.netlify.app/
+> https://coucouresource.netlify.app/
 > 
